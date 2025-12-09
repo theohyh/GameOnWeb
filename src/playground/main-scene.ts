@@ -10,9 +10,11 @@ import "@babylonjs/core/Helpers/sceneHelpers";
 // import { LoadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { Ground } from "./ground";
 import { setUI } from "./gui";
+import { PlayerMouvement } from "./player/player_controller";
+import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
 
 export default class MainScene {
-  private camera: ArcRotateCamera;
+  private camera: UniversalCamera;
 
   constructor(private scene: Scene, private canvas: HTMLCanvasElement, private engine: Engine | WebGPUEngine) {
     this._setCamera(scene);
@@ -22,9 +24,24 @@ export default class MainScene {
   }
 
   _setCamera(scene: Scene): void {
+    /*
     this.camera = new ArcRotateCamera("camera", Tools.ToRadians(90), Tools.ToRadians(80), 20, Vector3.Zero(), scene);
     this.camera.attachControl(this.canvas, true);
     this.camera.setTarget(Vector3.Zero());
+    */
+    this.camera = new UniversalCamera("camera", new Vector3(0, 5, -10), scene);
+    this.camera.attachControl(this.canvas, true);
+
+    // Disable default camera keyboard inputs
+    //this.camera.inputs.remove(this.camera.inputs.attached.keyboard);
+
+    this.camera.speed = 0.5;
+    this.camera.angularSensibility = 1000;
+
+    // Enable pointer lock on click
+    /*this.scene.onPointerDown = () => {
+      this.engine.enterPointerlock();
+    };*/
   }
 
   _setLight(scene: Scene): void {
@@ -45,6 +62,7 @@ export default class MainScene {
   async loadComponents(): Promise<void> {
     // Load your files in order
     new Ground(this.scene);
+    new PlayerMouvement(this.scene, this.camera);
     // Load Babylon GUI
     await setUI(this.scene);
     //
