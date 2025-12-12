@@ -33,15 +33,18 @@ export default class MainScene {
     this.camera.attachControl(this.canvas, true);
 
     // Disable default camera keyboard inputs
-    //this.camera.inputs.remove(this.camera.inputs.attached.keyboard);
+    this.camera.inputs.remove(this.camera.inputs.attached.keyboard);
 
-    this.camera.speed = 0.5;
-    this.camera.angularSensibility = 1000;
+    this.camera.inertia = 0.3;
+
+    this.camera.speed = 0;
+    this.camera.angularSensibility = 1000; //sensibility of the camera
 
     // Enable pointer lock on click
-    /*this.scene.onPointerDown = () => {
+    this.scene.onPointerDown = () => {
       this.engine.enterPointerlock();
-    };*/
+    };
+
   }
 
   _setLight(scene: Scene): void {
