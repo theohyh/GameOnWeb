@@ -6,6 +6,7 @@ import { KeyboardEventTypes } from "@babylonjs/core/Events/keyboardEvents";
 import { PhysicsCharacterController } from "@babylonjs/core/Physics/";
 import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { Ray } from "@babylonjs/core/Culling/ray";
 
 export class PlayerMouvement {
     private camera: UniversalCamera;
@@ -90,7 +91,27 @@ export class PlayerMouvement {
             velocity.y = player.physicsBody.getLinearVelocity().y;
             player.physicsBody.setLinearVelocity(velocity);
         }
+
+        if (this.inputMap[" "]) {
+            this._jump(player);
+        }
     }
 
+    private _jump(player: any): void {
+        // Raycast to check if grounded
+        // Origin: player center. Direction: Down. Length: slightly more than half height (0.5 for height 1) + buffer
+        const ray = new Ray(player.position, new Vector3(0, -1, 0), 0.6);
+        const pick = this.scene.pickWithRay(ray, (mesh) => mesh.isPickable && mesh.name !== "player");
 
+        if (pick && pick.hit) {
+            const currentVel = player.physicsBody.getLinearVelocity();
+            // Only jump if not moving up too fast (prevent double jumping glitched)
+            if (Math.abs(currentVel.y) < 0.5) {
+                currentVel.y = 5; // Jump force
+                player.physicsBody.setLinearVelocity(currentVel);
+            }
+        }
+
+
+    }
 }
