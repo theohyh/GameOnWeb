@@ -90,7 +90,10 @@ class App {
     // Works only in DEV mode to reduce the size of the PRODUCTION build
     // Comment IF statement to work in both modes
     if (import.meta.env.DEV) {
-      await Promise.all([import("@babylonjs/core/Debug/debugLayer"), import("@babylonjs/inspector")]);
+      await Promise.all([
+        import("@babylonjs/core/Debug/debugLayer"),
+        import("@babylonjs/inspector"),
+      ]);
 
       window.addEventListener("keydown", (ev) => {
         // Shift+Ctrl+Alt+I

@@ -16,7 +16,11 @@ import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
 export default class MainScene {
   private camera: UniversalCamera;
 
-  constructor(private scene: Scene, private canvas: HTMLCanvasElement, private engine: Engine | WebGPUEngine) {
+  constructor(
+    private scene: Scene,
+    private canvas: HTMLCanvasElement,
+    private engine: Engine | WebGPUEngine,
+  ) {
     this._setCamera(scene);
     this._setLight(scene);
     this._setEnvironment(scene);
@@ -44,7 +48,6 @@ export default class MainScene {
     this.scene.onPointerDown = () => {
       this.engine.enterPointerlock();
     };
-
   }
 
   _setLight(scene: Scene): void {
@@ -53,11 +56,19 @@ export default class MainScene {
   }
 
   _setEnvironment(scene: Scene) {
-    scene.createDefaultEnvironment({ createGround: false, createSkybox: false });
+    scene.createDefaultEnvironment({
+      createGround: false,
+      createSkybox: false,
+    });
   }
 
   _setPipeLine(): void {
-    const pipeline = new DefaultRenderingPipeline("default-pipeline", false, this.scene, [this.scene.activeCamera!]);
+    const pipeline = new DefaultRenderingPipeline(
+      "default-pipeline",
+      false,
+      this.scene,
+      [this.scene.activeCamera!],
+    );
     pipeline.fxaaEnabled = true;
     pipeline.samples = 4;
   }

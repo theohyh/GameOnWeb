@@ -1,5 +1,10 @@
 import { Scene } from "@babylonjs/core/scene";
-import { AdvancedDynamicTexture, Button, StackPanel, TextBlock } from "@babylonjs/gui/2D";
+import {
+  AdvancedDynamicTexture,
+  Button,
+  StackPanel,
+  TextBlock,
+} from "@babylonjs/gui/2D";
 
 export const setUI = async (scene: Scene) => {
   if (scene.getEngine().name === "WebGPU") {
@@ -33,7 +38,10 @@ export const setUI = async (scene: Scene) => {
     (button.children[0] as TextBlock).text = counter.toString();
   });
 
-  const disposeButton = Button.CreateSimpleButton("disposeButton", "Dispose GUI");
+  const disposeButton = Button.CreateSimpleButton(
+    "disposeButton",
+    "Dispose GUI",
+  );
   disposeButton.width = 0.9;
   disposeButton.height = "40px";
   disposeButton.color = "white";
